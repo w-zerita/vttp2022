@@ -44,19 +44,19 @@ public class QuotationService {
             .post(URL)
             .contentType(MediaType.APPLICATION_JSON)
             .accept(MediaType.APPLICATION_JSON)
-            // .header("Accept", "application/json")
             .body(itemArr.toString(), String.class);
 
         System.out.printf(">>> req: %s\n", req.toString());
 
         RestTemplate template = new RestTemplate();
-        ResponseEntity<String> resp = template.exchange(req, String.class);
 
-        System.out.println(">>> resp: " + resp.toString());
-
-        if (resp.getStatusCodeValue() >= 400)
-            return Optional.empty();
         try {
+            ResponseEntity<String> resp = template.exchange(req, String.class);
+            System.out.println(">>> resp: " + resp.toString());
+
+            if (resp.getStatusCodeValue() >= 400)
+                return Optional.empty();
+                
             Quotation q = createQuotation(resp.getBody());
             System.out.printf(">>>> Quotation Service - resp: %s\n", resp.getBody());
             System.out.printf(">>>> q: %s\n", q.getQuotations());
